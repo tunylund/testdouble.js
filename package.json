@@ -79,10 +79,7 @@
       "ES_SUPPORT"
     ],
     "ignore": [
-      "dist",
-      "examples",
-      "generated",
-      "lib"
+      "examples"
     ]
   },
   "dependencies": {
