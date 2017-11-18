@@ -82,7 +82,7 @@ describe 'td.constructor', ->
       And -> td.explain(@fakeInstance[@symbolFoo]).isTestDouble == true
       And -> @fakeConstructor.toString() == '[test double for "(unnamed constructor)"]'
       And -> @fakeInstance.toString() == '[test double instance of constructor]'
-      And -> @fakeInstance[@symbolFoo].toString() == '[test double for "#Symbol(foo)"]'
+      And -> @fakeInstance[@symbolFoo].toString() == '[test double for "#[Symbol(foo)]"]'
 
   describe 'edge case: being given a function without prototypal methods', ->
     Given -> @boringFunc = ->

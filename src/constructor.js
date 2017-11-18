@@ -13,7 +13,9 @@ var fakeConstructorFromNames = (funcNames) => {
       '[test double instance of constructor]'
 
     _.each(funcNames, (funcName) => {
-      fakeConstructor.prototype[funcName] = tdFunction(`#${String(funcName)}`)
+      fakeConstructor.prototype[funcName] = tdFunction(friendlyNameFor(funcName))
     })
   })
 }
+
+var friendlyNameFor = (name) => (typeof name === 'symbol') ? `#[${String(name)}]` : `#${String(name)}`

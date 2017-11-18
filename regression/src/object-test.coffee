@@ -32,7 +32,7 @@ describe 'td.object', ->
       When -> td.when(@testDouble[@symbolFoo]()).thenReturn('zing!')
       Then -> @testDouble[@symbolFoo]() == 'zing!'
       And -> @testDouble.toString() == '[test double object]'
-      And -> @testDouble[@symbolFoo].toString() == '[test double for ".Symbol(foo)"]'
+      And -> @testDouble[@symbolFoo].toString() == '[test double for "[Symbol(foo)]"]'
 
   describe 'passing a function to td.object erroneously (1.x)', ->
     When -> try td.object(->) catch e then @result = e
@@ -64,7 +64,7 @@ describe 'td.object', ->
 
       if (global.Symbol)
         context 'with Symbol propKey', ->
-          And -> @testDouble[Symbol('foo')].toString() == '[test double for "thing.Symbol(foo)"]'
+          And -> @testDouble[Symbol('foo')].toString() == '[test double for "thing[Symbol(foo)]"]'
 
   else
     describe 'getting an error message', ->

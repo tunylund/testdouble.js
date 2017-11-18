@@ -36,7 +36,7 @@ module.exports = {
     const someFunc = () => {}
     const symFoo = Symbol('foo')
     const symBar = Symbol('bar')
-    td.when(tdFunction('Symbol(foo)Symbol(bar)'))
+    td.when(tdFunction('[Symbol(foo)][Symbol(bar)]'))
       .thenReturn('fake thing')
     td.when(isGenerator(someFunc)).thenReturn(false)
 

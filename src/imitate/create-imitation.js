@@ -11,9 +11,10 @@ export default (original, names) => {
       return original
     } else {
       // TODO: this will become src/function/create and include parent reference instead of name joining here
-      return tdFunction(names.map(String).join('') || '(anonymous function)')
+      return tdFunction(names.map(friendlyName).join('') || '(anonymous function)')
     }
   } else {
     return _.clone(original)
   }
 }
+var friendlyName = (name) => (typeof name === 'symbol') ? `[${String(name)}]` : String(name)

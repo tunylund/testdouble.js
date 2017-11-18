@@ -26,7 +26,7 @@ var fakeObject = (nameOrType, config) => {
 
 var createTestDoublesForFunctionNames = (names) =>
   _.transform(names, (acc, funcName) => {
-    acc[funcName] = tdFunction(`.${String(funcName)}`)
+    acc[funcName] = tdFunction(friendlyNameFor(funcName))
   })
 
 var createTestDoubleViaProxy = (name, config) => {
@@ -35,12 +35,14 @@ var createTestDoubleViaProxy = (name, config) => {
   return new Proxy(obj, {
     get (target, propKey, receiver) {
       if (!obj.hasOwnProperty(propKey) && !_.includes(config.excludeMethods, propKey)) {
-        obj[propKey] = tdFunction(`${nameOf(name)}.${String(propKey)}`)
+        obj[propKey] = tdFunction(`${nameOf(name)}${friendlyNameFor(propKey)}`)
       }
       return obj[propKey]
     }
   })
 }
+
+var friendlyNameFor = (name) => (typeof name === 'symbol') ? `[${String(name)}]` : `.${String(name)}`
 
 var ensureProxySupport = (name) => {
   if (typeof Proxy === 'undefined') {
