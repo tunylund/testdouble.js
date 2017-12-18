@@ -4,6 +4,7 @@ import addImpliedCallbackArgIfNecessary from './add-implied-callback-arg-if-nece
 import CallLog from '../value/call-log'
 import StubbingRegister from '../value/stubbing-register'
 import Stubbing from '../value/stubbing'
+import ensureContract from '../contract/ensure-contract'
 
 export default (__rehearseInvocationHere__, options) => {
   const rehearsal = CallLog.instance.pop()
@@ -15,5 +16,8 @@ export default (__rehearseInvocationHere__, options) => {
       outcomes,
       options
     ))
+    if (options.ensureContract) {
+      ensureContract(type, rehearsal.double, rehearsal.call, outcomes)
+    }
   })
 }

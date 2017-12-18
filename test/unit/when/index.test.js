@@ -3,22 +3,23 @@ import Call from '../../../src/value/call'
 import CallLog from '../../../src/value/call-log'
 import StubbingRegister from '../../../src/value/stubbing-register'
 
-let ensureRehearsal, chainStubbing, addImpliedCallbackArgIfNecessary, subject
+let ensureRehearsal, ensureContract, chainStubbing, addImpliedCallbackArgIfNecessary, subject
 module.exports = {
   beforeEach: () => {
     ensureRehearsal = td.replace('../../../src/when/ensure-rehearsal').default
+    ensureContract = td.replace('../../../src/contract/ensure-contract').default
     chainStubbing = td.replace('../../../src/when/chain-stubbing').default
     addImpliedCallbackArgIfNecessary = td.replace('../../../src/when/add-implied-callback-arg-if-necessary').default
     subject = require('../../../src/when/index').default
   },
-  'adds a stubbing, returns the fake': () => {
+  'adds a stubbing, returns the fake, ensures contract': () => {
     const double = Double.create()
     const call = new Call(null, ['arg1', 'arg2'])
     CallLog.instance.log(double, call)
     td.when(chainStubbing(double, td.callback('a type', ['a stub']))).thenReturn('chained methods')
     td.when(addImpliedCallbackArgIfNecessary('a type', ['arg1', 'arg2'])).thenReturn('good args')
 
-    const result = subject('_fake rehearsal arg_', 'some options')
+    const result = subject('_fake rehearsal arg_', { ensureContract: true })
 
     td.verify(ensureRehearsal({double, call}))
     assert.equal(result, 'chained methods')
@@ -27,6 +28,8 @@ module.exports = {
     assert.equal(stubbings[0].type, 'a type')
     assert.deepEqual(stubbings[0].args, 'good args')
     assert.deepEqual(stubbings[0].outcomes, ['a stub'])
-    assert.equal(stubbings[0].options, 'some options')
+    assert.deepEqual(stubbings[0].options, { ensureContract: true })
+
+    td.verify(ensureContract('a type', double, call, ['a stub']))
   }
 }
